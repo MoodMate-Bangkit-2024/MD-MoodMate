@@ -34,4 +34,14 @@
     </integer-array>
 
     <string name="type_message">Ketik pesan</string>
+
+    <string name="journal_title">Judul Jurnal</string>
+    <string name="fill_journal">Isi Jurnal</string>
+    <string name="save">Simpan</string>
+    <string name="delete">Hapus</string>
+    <string name="home_message">Semoga hari mu menyenangkan!</string>
+    <string name="journal_message">Yuk cerita bagaimana harimu!</string>
+    <string name="start_journal">Mulai Jurnal</string>
+    <string name="empty_message_journal">Anda belum mengisi Jurnal</string>
+
 </resources>
