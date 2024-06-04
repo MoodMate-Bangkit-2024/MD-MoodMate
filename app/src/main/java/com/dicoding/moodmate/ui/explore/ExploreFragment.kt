@@ -4,35 +4,65 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.dicoding.moodmate.R
 import com.dicoding.moodmate.databinding.FragmentExploreBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ExploreFragment : Fragment() {
 
     private var _binding: FragmentExploreBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+    private lateinit var rvExplore: RecyclerView
+    private val list = ArrayList<Explore>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val exploreViewModel =
-            ViewModelProvider(this).get(ExploreViewModel::class.java)
-
         _binding = FragmentExploreBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textDashboard
-        exploreViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+        rvExplore = binding.rvExplore
+        rvExplore.setHasFixedSize(true)
+        rvExplore.layoutManager = LinearLayoutManager(context)
+
+        loadExploreData()
+
         return root
+    }
+
+    private fun loadExploreData() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            list.addAll(getListExplore())
+            showRecyclerList()
+        }
+    }
+
+    private suspend fun getListExplore(): ArrayList<Explore> {
+        return withContext(Dispatchers.IO) {
+            val dataName = resources.getStringArray(R.array.data_name)
+            val dataPhoto = resources.obtainTypedArray(R.array.data_photo)
+            val listExplore = ArrayList<Explore>()
+            for (i in dataName.indices) {
+                val explore = Explore(dataName[i], dataPhoto.getResourceId(i, -1))
+                listExplore.add(explore)
+            }
+            dataPhoto.recycle()
+            listExplore
+        }
+    }
+
+    private fun showRecyclerList() {
+        rvExplore.layoutManager = LinearLayoutManager(context)
+        val exploreAdapter = ExploreAdapter(list)
+        rvExplore.adapter = exploreAdapter
     }
 
     override fun onDestroyView() {

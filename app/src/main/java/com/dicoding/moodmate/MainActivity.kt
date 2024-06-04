@@ -1,13 +1,13 @@
 package com.dicoding.moodmate
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
+import androidx.fragment.app.Fragment
 import com.dicoding.moodmate.databinding.ActivityMainBinding
+import com.dicoding.moodmate.ui.account.AccountFragment
+import com.dicoding.moodmate.ui.chat.ChatFragment
+import com.dicoding.moodmate.ui.explore.ExploreFragment
+import com.dicoding.moodmate.ui.home.HomeFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,21 +15,31 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navView: BottomNavigationView = binding.navView
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, HomeFragment()).commit()
 
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_home, R.id.navigation_explore, R.id.navigation_chat, R.id.navigation_account
-            )
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+        binding.navMenu.setOnItemSelectedListener{
+            when(it.itemId){
+                R.id.navigation_home -> changeFragment(HomeFragment())
+
+                R.id.navigation_chat -> changeFragment(ChatFragment())
+
+                R.id.navigation_explore -> changeFragment(ExploreFragment())
+
+                R.id.navigation_account -> changeFragment(AccountFragment())
+            }
+            true
+        }
+    }
+
+    private fun changeFragment(fragment: Fragment){
+        val transactionManager = supportFragmentManager
+        val transactionFragment = transactionManager.beginTransaction()
+
+        transactionFragment.replace(R.id.fragment_container, fragment)
+        transactionFragment.commit()
     }
 }

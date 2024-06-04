@@ -19,4 +19,19 @@
     <string name="greeting">Halo %1$s,</string>
     <string name="logout">Keluar</string>
     <string name="splash">Kesehatan mental adalah kunci untuk hidup yang lebih bahagia.</string>
+    <string name="article">kategori explore</string>
+
+    <string-array name="data_name">
+        <item>Video Terapi dan Relaksasi</item>
+        <item>Panduan Praktis Kesehatan Mental</item>
+        <item>Sinema Untuk Kesehatan Mental</item>
+    </string-array>
+
+    <integer-array name="data_photo">
+        <item>@drawable/relax</item>
+        <item>@drawable/meditation</item>
+        <item>@drawable/self_love</item>
+    </integer-array>
+
+    <string name="type_message">Ketik pesan</string>
 </resources>
