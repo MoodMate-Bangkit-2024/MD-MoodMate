@@ -7,12 +7,23 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.dicoding.moodmate.data.response.ErrorResponse
 import com.dicoding.moodmate.databinding.ActivitySignupBinding
+import com.dicoding.moodmate.ui.ViewModelFactory
+import com.google.gson.Gson
+import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 class SignupActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
+    private val viewModel by viewModels<SignupViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +33,34 @@ class SignupActivity : AppCompatActivity() {
         setupView()
         setupAction()
         playAnimation()
+    }
+    private fun register(name: String, email: String, password: String) {
+        showLoading(true)
+        lifecycleScope.launch {
+            try {
+                viewModel.register(name, email, password)
+                AlertDialog.Builder(this@SignupActivity).apply {
+                    setTitle("Yeah!")
+                    setMessage("Akun dengan $email sudah jadi nih. Yuk, login dan bercerita dengan matebot." )
+                    setPositiveButton("Lanjut") { _, _ ->
+                        finish()
+                    }
+                    create()
+                    show()
+                }
+            } catch (e: HttpException) {
+                val jsonInString = e.response()?.errorBody()?.string()
+                val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
+                val errorMessage = errorBody.message ?: "Terjadi kesalahan"
+                Toast.makeText(this@SignupActivity, errorMessage, Toast.LENGTH_SHORT).show()
+            } finally {
+                showLoading(false)
+            }
+        }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     private fun setupView() {
@@ -39,17 +78,10 @@ class SignupActivity : AppCompatActivity() {
 
     private fun setupAction() {
         binding.signupButton.setOnClickListener {
+            val username = binding.nameEditText.text.toString()
             val email = binding.emailEditText.text.toString()
-
-            AlertDialog.Builder(this).apply {
-                setTitle("Yeah!")
-                setMessage("Akun dengan $email sudah jadi nih. Yuk, login dan bercerita dengan matebot.")
-                setPositiveButton("Lanjut") { _, _ ->
-                    finish()
-                }
-                create()
-                show()
-            }
+            val password = binding.passwordEditText.text.toString()
+            register(username, email, password)
         }
     }
 
