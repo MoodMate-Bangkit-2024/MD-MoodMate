@@ -1,17 +1,15 @@
 package com.dicoding.moodmate.ui.account
 
-import androidx.lifecycle.LiveData
+
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.dicoding.moodmate.data.UserRepository
-import com.dicoding.moodmate.data.pref.UserModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class AccountViewModel(private val repository: UserRepository) : ViewModel() {
-    fun getSession(): LiveData<UserModel> {
-        return repository.getSession().asLiveData()
-    }
+    fun getSession() = runBlocking { repository.getSession().first() }
 
     fun logout() {
         viewModelScope.launch {

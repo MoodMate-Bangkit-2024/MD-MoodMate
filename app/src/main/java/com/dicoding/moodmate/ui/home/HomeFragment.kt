@@ -12,12 +12,15 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dicoding.moodmate.R
 import com.dicoding.moodmate.databinding.FragmentHomeBinding
 import com.dicoding.moodmate.ui.journal.JournalAddUpdateActivity
 import com.dicoding.moodmate.ui.journal.adapter.JournalAdapter
 import com.dicoding.moodmate.ui.journal.db.JournalHelper
 import com.dicoding.moodmate.ui.journal.entitiy.Journal
 import com.dicoding.moodmate.ui.journal.helper.MappingHelper
+import com.dicoding.moodmate.ui.account.AccountViewModel
+import com.dicoding.moodmate.ui.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -30,6 +33,9 @@ class HomeFragment : Fragment() {
 
     private lateinit var adapter: JournalAdapter
     private val homeViewModel: HomeViewModel by viewModels()
+    private val accountViewModel: AccountViewModel by viewModels {
+        ViewModelFactory.getInstance(requireContext())
+    }
 
     private val resultLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -81,6 +87,11 @@ class HomeFragment : Fragment() {
                 adapter.listJournals = list
             }
         }
+
+        // Set the greeting message with user's email
+        val email = accountViewModel.getSession().email
+        val greeting = getString(R.string.greeting, email)
+        binding.tvGreeting.text = greeting
     }
 
     private fun setupRecyclerView() {

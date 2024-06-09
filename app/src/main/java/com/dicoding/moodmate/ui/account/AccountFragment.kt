@@ -12,27 +12,26 @@ import com.dicoding.moodmate.ui.ViewModelFactory
 import com.dicoding.moodmate.ui.welcome.WelcomeActivity
 
 class AccountFragment : Fragment() {
+
     private val viewModel by viewModels<AccountViewModel> {
         ViewModelFactory.getInstance(requireContext())
     }
-    private lateinit var binding: FragmentAccountBinding
+    private var _binding: FragmentAccountBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentAccountBinding.inflate(inflater, container, false)
+    ): View? {
+        _binding = FragmentAccountBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getSession().observe(viewLifecycleOwner) { user ->
-            if (!user.isLogin) {
-                startActivity(Intent(requireContext(), WelcomeActivity::class.java))
-                requireActivity().finish()
-            }
+        if (viewModel.getSession().isLogin) {
+            binding.nameTextView.text = viewModel.getSession().email
         }
 
         setupAction()
@@ -41,6 +40,14 @@ class AccountFragment : Fragment() {
     private fun setupAction() {
         binding.logoutButton.setOnClickListener {
             viewModel.logout()
+            ViewModelFactory.refresh()
+            startActivity(Intent(requireContext(), WelcomeActivity::class.java))
+            requireActivity().finish()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

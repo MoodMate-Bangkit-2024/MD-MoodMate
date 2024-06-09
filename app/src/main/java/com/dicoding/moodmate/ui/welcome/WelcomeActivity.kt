@@ -3,17 +3,21 @@ package com.dicoding.moodmate.ui.welcome
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.view.WindowInsets
-import android.view.WindowManager
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.dicoding.moodmate.MainActivity
 import com.dicoding.moodmate.databinding.ActivityWelcomeBinding
+import com.dicoding.moodmate.ui.ViewModelFactory
 import com.dicoding.moodmate.ui.login.LoginActivity
 import com.dicoding.moodmate.ui.signup.SignupActivity
 
 class WelcomeActivity : AppCompatActivity() {
+    private val viewModel by viewModels<WelcomeViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
+
     private lateinit var binding: ActivityWelcomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,22 +25,21 @@ class WelcomeActivity : AppCompatActivity() {
         binding = ActivityWelcomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupView()
         setupAction()
         playAnimation()
+
+        if (viewModel.getSession().isLogin) {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
     }
 
-    private fun setupView() {
-        @Suppress("DEPRECATION")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
+    override fun onResume() {
+        super.onResume()
+        if (viewModel.getSession().isLogin) {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
-        supportActionBar?.hide()
     }
 
     private fun setupAction() {
@@ -58,10 +61,8 @@ class WelcomeActivity : AppCompatActivity() {
 
         val login = ObjectAnimator.ofFloat(binding.loginButton, View.ALPHA, 1f).setDuration(1000)
         val signup = ObjectAnimator.ofFloat(binding.signupButton, View.ALPHA, 1f).setDuration(1000)
-        val title =
-            ObjectAnimator.ofFloat(binding.titleTextView, View.ALPHA, 1f).setDuration(1000)
-        val desc =
-            ObjectAnimator.ofFloat(binding.descTextView, View.ALPHA, 1f).setDuration(1000)
+        val title = ObjectAnimator.ofFloat(binding.titleTextView, View.ALPHA, 1f).setDuration(1000)
+        val desc = ObjectAnimator.ofFloat(binding.descTextView, View.ALPHA, 1f).setDuration(1000)
 
         val together = AnimatorSet().apply {
             playTogether(login, signup)

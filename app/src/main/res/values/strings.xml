@@ -44,4 +44,9 @@
     <string name="start_journal">Mulai Jurnal</string>
     <string name="empty_message_journal">Anda belum mengisi Jurnal</string>
 
+    <string name="hint_pass">Masukkan password</string>
+    <string name="hint_email">Masukkan email</string>
+    <string name="hint_name">Masukkan nama</string>
+    <string name="username">Nama Pengguna</string>
+
 </resources>
