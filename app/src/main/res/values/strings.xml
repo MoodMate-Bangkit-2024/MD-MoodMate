@@ -1,0 +1,58 @@
+<resources>
+    <string name="app_name">MoodMate</string>
+    <string name="title_home">Home</string>
+    <string name="title_explore">Explore</string>
+    <string name="title_chat">Chat</string>
+    <string name="title_account">Account</string>
+
+    <string name="signup">Daftar</string>
+    <string name="login">Masuk</string>
+    <string name="message_welcome_page">Mari berbagi cerita dengan matebot dan nikmati keseruan lainnya bersama!</string>
+    <string name="title_welcome_page">Selamat datang di MoodMate!</string>
+    <string name="title_signup_page">Lengkapi data dirimu di bawah ini</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="message_login_page">Masukkan dulu datamu</string>
+    <string name="title_login_page">Sudah siap berbagi cerita dengan matebot?</string>
+    <string name="name">Nama</string>
+    <string name="message_account_page">Kembali lagi nanti ya!</string>
+    <string name="greeting">Halo %1$s,</string>
+    <string name="logout">Keluar</string>
+    <string name="splash">Kesehatan mental adalah kunci untuk hidup yang lebih bahagia.</string>
+    <string name="article">kategori explore</string>
+
+
+    <string-array name="data_name">
+        <item>Video Terapi dan Relaksasi</item>
+        <item>Panduan Praktis Kesehatan Mental</item>
+        <item>Sinema Untuk Kesehatan Mental</item>
+    </string-array>
+
+    <integer-array name="data_photo">
+        <item>@drawable/video</item>
+        <item>@drawable/article</item>
+        <item>@drawable/movie</item>
+    </integer-array>
+
+    <string name="type_message">Ketik pesan</string>
+
+    <string name="journal_title">Judul Jurnal</string>
+    <string name="fill_journal">Isi Jurnal</string>
+    <string name="save">Simpan</string>
+    <string name="delete">Hapus</string>
+    <string name="home_message">Semoga hari mu menyenangkan!</string>
+    <string name="journal_message">Yuk cerita bagaimana harimu!</string>
+    <string name="start_journal">Mulai Jurnal</string>
+    <string name="empty_message_journal">Anda belum mengisi Jurnal</string>
+
+    <string name="hint_pass">Masukkan password</string>
+    <string name="hint_email">Masukkan email</string>
+    <string name="hint_name">Masukkan nama</string>
+    <string name="username">Nama Pengguna</string>
+    <string name="article_name">judul artikel</string>
+    <string name="description">deskripsi artikel</string>
+    <string name="date">tanggal artikel</string>
+    <string name="video_name">judul video</string>
+    <string name="movie_name">judul movie</string>
+
+</resources>
