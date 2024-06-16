@@ -2,29 +2,27 @@ package com.dicoding.moodmate.ui.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.IntentCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.moodmate.R
+import com.dicoding.moodmate.data.pref.dataStore
+import com.dicoding.moodmate.data.response.JournalData
 import com.dicoding.moodmate.databinding.FragmentHomeBinding
-import com.dicoding.moodmate.ui.journal.JournalAddUpdateActivity
-import com.dicoding.moodmate.ui.journal.adapter.JournalAdapter
-import com.dicoding.moodmate.ui.journal.db.JournalHelper
-import com.dicoding.moodmate.ui.journal.entitiy.Journal
-import com.dicoding.moodmate.ui.journal.helper.MappingHelper
-import com.dicoding.moodmate.ui.account.AccountViewModel
 import com.dicoding.moodmate.ui.ViewModelFactory
+import com.dicoding.moodmate.ui.account.AccountViewModel
+import com.dicoding.moodmate.ui.journal.JournalAdapter
+import com.dicoding.moodmate.ui.journal.JournalAddUpdateActivity
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.map
 
 class HomeFragment : Fragment() {
 
@@ -43,24 +41,30 @@ class HomeFragment : Fragment() {
         if (result.data != null) {
             when (result.resultCode) {
                 JournalAddUpdateActivity.RESULT_ADD -> {
-                    val journal = result.data?.getParcelableExtra<Journal>(JournalAddUpdateActivity.EXTRA_JOURNAL) as Journal
-                    adapter.addItem(journal)
-                    binding.rvJournals.smoothScrollToPosition(adapter.itemCount - 1)
-                    showSnackbarMessage("Satu Jurnal berhasil ditambahkan")
-                    checkRecyclerViewEmpty()
+                    val journal = result.data?.getParcelableExtra<JournalData>(JournalAddUpdateActivity.EXTRA_JOURNAL)
+                    if (journal != null) {
+                        adapter.addItem(journal)
+                        binding.rvJournals.smoothScrollToPosition(adapter.itemCount - 1)
+                        showSnackbarMessage("Satu Jurnal berhasil ditambahkan")
+                        checkRecyclerViewEmpty()
+                    }
                 }
+
                 JournalAddUpdateActivity.RESULT_UPDATE -> {
-                    val journal = result.data?.getParcelableExtra<Journal>(JournalAddUpdateActivity.EXTRA_JOURNAL) as Journal
-                    val position = result.data?.getIntExtra(JournalAddUpdateActivity.EXTRA_POSITION, 0) as Int
-                    adapter.updateItem(position, journal)
-                    binding.rvJournals.smoothScrollToPosition(position)
-                    showSnackbarMessage("Satu Jurnal berhasil diubah")
-                    checkRecyclerViewEmpty()
+                    val journal = result.data?.getParcelableExtra<JournalData>(JournalAddUpdateActivity.EXTRA_JOURNAL)
+                    val position = result.data?.getIntExtra(JournalAddUpdateActivity.EXTRA_POSITION, 0) ?: 0
+                    if (journal != null) {
+                        adapter.updateItem(position, journal)
+                        binding.rvJournals.smoothScrollToPosition(position)
+                        showSnackbarMessage("Satu Jurnal berhasil diubah")
+                        checkRecyclerViewEmpty()
+                    }
                 }
+
                 JournalAddUpdateActivity.RESULT_DELETE -> {
-                    val position = result.data?.getIntExtra(JournalAddUpdateActivity.EXTRA_POSITION, 0) as Int
+                    val position = result.data?.getIntExtra(JournalAddUpdateActivity.EXTRA_POSITION, 0) ?: 0
                     adapter.removeItem(position)
-                    showSnackbarMessage("Satu item berhasil dihapus")
+                    showSnackbarMessage("Satu Jurnal berhasil dihapus")
                     checkRecyclerViewEmpty()
                 }
             }
@@ -82,13 +86,12 @@ class HomeFragment : Fragment() {
         loadJournalsAsync()
 
         if (savedInstanceState != null) {
-            val list = savedInstanceState.getParcelableArrayList<Journal>(EXTRA_STATE)
+            val list = savedInstanceState.getParcelableArrayList<JournalData>(EXTRA_STATE)
             if (list != null) {
                 adapter.listJournals = list
             }
         }
 
-        // Set the greeting message with user's email
         val email = accountViewModel.getSession().email
         val greeting = getString(R.string.greeting, email)
         binding.tvGreeting.text = greeting
@@ -96,7 +99,7 @@ class HomeFragment : Fragment() {
 
     private fun setupRecyclerView() {
         adapter = JournalAdapter(object : JournalAdapter.OnItemClickCallback {
-            override fun onItemClicked(selectedJournal: Journal?, position: Int?) {
+            override fun onItemClicked(selectedJournal: JournalData, position: Int?) {
                 val intent = Intent(activity, JournalAddUpdateActivity::class.java)
                 intent.putExtra(JournalAddUpdateActivity.EXTRA_JOURNAL, selectedJournal)
                 intent.putExtra(JournalAddUpdateActivity.EXTRA_POSITION, position)
@@ -120,31 +123,26 @@ class HomeFragment : Fragment() {
     }
 
     private fun loadJournalsAsync() {
-        lifecycleScope.launch {
-            val journalHelper = JournalHelper.getInstance(requireContext())
-            journalHelper.open()
-            val deferredJournals = async(Dispatchers.IO) {
-                val cursor = journalHelper.queryAll()
-                MappingHelper.mapCursorToArrayList(cursor)
+        context?.dataStore!!.data.map { pref ->
+            // TODO: Ambil token dari datastore, passing ke homeViewModel.loadJournals()
+        }
+
+        homeViewModel.loadJournals(
+            // TODO: For now, token masih hardcoded, nanti pake yang dari datastore
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjZiZTc5YWRhYmVjZWU3OTA4ODg2NCIsImlhdCI6MTcxODUyNTA5NCwiZXhwIjoxNzE4Nzg0Mjk0fQ.HYKx9YYc7e1IzMUc2UXBj62Qv9zziYLD-0tuffVbl6w"
+        )
+
+        homeViewModel.journals.observe(viewLifecycleOwner) { journals ->
+            Log.d("Journal Get", "loadJournalsAsync: $journals")
+            if (journals != null) {
+                adapter.listJournals = ArrayList(journals)
+                binding.tvEmptyMessage.visibility = if (journals.isEmpty()) View.VISIBLE else View.GONE
             }
-            val journals = deferredJournals.await()
-            if (journals.size > 0) {
-                adapter.listJournals = journals
-                binding.tvEmptyMessage.visibility = View.GONE // Sembunyikan pesan kosong
-            } else {
-                adapter.listJournals = ArrayList()
-                binding.tvEmptyMessage.visibility = View.VISIBLE // Tampilkan pesan kosong
-            }
-            journalHelper.close()
         }
     }
 
     private fun checkRecyclerViewEmpty() {
-        if (adapter.itemCount == 0) {
-            binding.tvEmptyMessage.visibility = View.VISIBLE
-        } else {
-            binding.tvEmptyMessage.visibility = View.GONE
-        }
+        binding.tvEmptyMessage.visibility = if (adapter.itemCount == 0) View.VISIBLE else View.GONE
     }
 
     private fun showSnackbarMessage(message: String) {

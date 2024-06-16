@@ -1,15 +1,15 @@
-package com.dicoding.moodmate.ui.journal.adapter
+package com.dicoding.moodmate.ui.journal
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.dicoding.moodmate.data.response.JournalData
 import com.dicoding.moodmate.databinding.ItemJournalBinding
-import com.dicoding.moodmate.ui.journal.entitiy.Journal
 
 class JournalAdapter(private val onItemClickCallback: OnItemClickCallback) :
     RecyclerView.Adapter<JournalAdapter.JournalViewHolder>() {
 
-    var listJournals = ArrayList<Journal>()
+    var listJournals = ArrayList<JournalData>()
         set(listJournals) {
             if (listJournals.size > 0) {
                 this.listJournals.clear()
@@ -18,12 +18,12 @@ class JournalAdapter(private val onItemClickCallback: OnItemClickCallback) :
             notifyDataSetChanged()
         }
 
-    fun addItem(journal: Journal) {
+    fun addItem(journal: JournalData) {
         this.listJournals.add(journal)
         notifyItemInserted(this.listJournals.size - 1)
     }
 
-    fun updateItem(position: Int, journal: Journal) {
+    fun updateItem(position: Int, journal: JournalData) {
         this.listJournals[position] = journal
         notifyItemChanged(position, journal)
     }
@@ -46,10 +46,10 @@ class JournalAdapter(private val onItemClickCallback: OnItemClickCallback) :
     override fun getItemCount(): Int = this.listJournals.size
 
     inner class JournalViewHolder(private val binding: ItemJournalBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(journal: Journal) {
+        fun bind(journal: JournalData) {
             binding.tvItemTitle.text = journal.title
-            binding.tvItemDate.text = journal.date
-            binding.tvItemFill.text = journal.description
+            binding.tvItemDate.text = journal.createdAt
+            binding.tvItemFill.text = journal.text
             binding.cvItemJournal.setOnClickListener {
                 onItemClickCallback.onItemClicked(journal, adapterPosition)
             }
@@ -57,6 +57,6 @@ class JournalAdapter(private val onItemClickCallback: OnItemClickCallback) :
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(selectedJournal: Journal?, position: Int?)
+        fun onItemClicked(selectedJournal: JournalData, position: Int?)
     }
 }

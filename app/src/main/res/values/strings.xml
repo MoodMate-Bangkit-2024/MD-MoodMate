@@ -55,4 +55,8 @@
     <string name="video_name">judul video</string>
     <string name="movie_name">judul movie</string>
 
+
+    <string name="mood_predict">Kamu terlihat sedang @mood</string>
+    <string name="chat">Mulai chat</string>
+    <string name="recommendation">Lihat rekomendasi</string>
 </resources>
