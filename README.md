@@ -1,23 +1,23 @@
-Mobile Development
+# Mobile Development
 The backend is built on Kotlin with several packages, including:
 
-Kotlin: The primary programming language for modern and robust Android app development.
-Android Studio: A comprehensive Integrated Development Environment (IDE) for Android app development.
-Postman: A tool for testing APIs, allowing developers to send HTTP requests and inspect their responses.
-Figma: A cloud-based design tool that enables collaboration on UI/UX design.
-Dribbble: A platform for finding design inspiration and showcasing design work.
-JWT (JSON Web Token): A standard for creating JSON-based tokens used for user authentication.
+* **Kotlin:** The primary programming language for modern and robust Android app development.
+* **Android Studio:** A comprehensive Integrated Development Environment (IDE) for Android app development.
+* **Postman:** A tool for testing APIs, allowing developers to send HTTP requests and inspect their responses.
+* **Figma:** A cloud-based design tool that enables collaboration on UI/UX design.
+* **Dribbble:** A platform for finding design inspiration and showcasing design work.
+* **JWT (JSON Web Token):** A standard for creating JSON-based tokens used for user authentication.
 
-System Architecture Design
-System Architecture
+## System Architecture Design
+### System Architecture
 The diagram above illustrates the path that data follows, originating from the user, passing through the API endpoint, navigating through the backend architecture, and finally returning to the user.
 
 When the user first submits their request, a POST request is triggered. This request is intercepted and processed by the Kotlin app using Retrofit. Retrofit then extracts the incoming data from the request body and passes it on for further processing.
 
 After receiving the response from the server, the app stores it in a local Database using Room. Finally, the processed data is rendered and displayed to the user, completing the user interaction with the application.
 
-Mobile Development
-Table of Contents
+## Mobile Development
+### Table of Contents
 Introduction
 Datasets
 Libraries
