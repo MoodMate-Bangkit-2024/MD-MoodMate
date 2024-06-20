@@ -24,56 +24,64 @@ Libraries
 Models
 Evaluation
 Model Conversion
-Introduction
+
+## Introduction
 This repository contains documentation for the Mobile Application Development component of the MoodMate Project. We are developing two main features for this project:
 
-Mood Detection from Journaling: This feature classifies the user’s journal entries into one of four mood labels: angry, sad, fearful, and happy.
+**Mood Detection from Journaling:** This feature classifies the user’s journal entries into one of four mood labels: angry, sad, fearful, and happy.
 
-Chat Bot: This feature enables interaction with the user.
+**Chat Bot:** This feature enables interaction with the user.
 This document provides a comprehensive overview of the methodology, models, and development tools used in developing these features.
 
-Datasets
+**Datasets**
 Our project utilizes several datasets sourced from various repositories to support various aspects of our research and development. These datasets are integral to training and evaluating our development models and algorithms.
 
-Libraries
+**Libraries**
 In the MoodMate-Mobile project, various libraries and tools are used for data processing, model building, and evaluation. Here is a brief explanation of each:
 
-Data Manipulation and Analysis
+**Data Manipulation and Analysis**
 
-Retrofit: For handling and processing HTTP and API requests.
-OkHttp: HTTP client for network interactions.
-Data Processing and Storage
+**Retrofit:** For handling and processing HTTP and API requests.
+**OkHttp:** HTTP client for network interactions.
 
-DataStore: For simple and efficient data storage.
-Room: For more complex and relational local data storage.
-Component Architecture
+**Data Processing and Storage**
 
-Lifecycle component: Manages the lifecycle of UI components.
-ViewModel: For persistent data storage throughout the lifecycle of UI components.
-Navigation component: For handling navigation between screens.
+**DataStore:** For simple and efficient data storage.
+**Room:** For more complex and relational local data storage.
+
+**Component Architecture**
+
+**Lifecycle component:** Manages the lifecycle of UI components.
+**ViewModel:** For persistent data storage throughout the lifecycle of UI components.
+**Navigation component**: For handling navigation between screens.
 Image Processing
 
-Glide: For image processing and loading.
-Design and UI
+**Glide:** For image processing and loading.
+**Design and UI**
 
-Figma: For UI/UX design collaboration.
-Dribbble: For design inspiration.
-Models
+**Figma:** For UI/UX design collaboration.
+
+![CAPSTONE (2)](https://github.com/MoodMate-Bangkit-2024/MD-MoodMate/assets/91709693/7e6c6dc9-547b-4f0c-a561-6b0e8a56f37c)
+
+
+**Dribbble:** For design inspiration.
+
+### Models
 The MoodMate-Mobile project includes two main features: Mood Detection from Journaling and Chatbot. Each feature uses a specific development model and architecture to achieve its functionality.
 
-Mood Detection from Journaling
+**Mood Detection from Journaling**
 This feature classifies a user’s journal entries into one of four mood labels: angry, sad, scared, and happy. The model architecture for mood detection includes preprocessing steps to clean and tokenize text data, followed by a neural network to accurately classify moods.
 
-Chat Bot
+**Chat Bot**
 The Chat Bot feature allows interaction with the user, providing responses based on user input.
 
-Evaluation
+**Evaluation**
 The MoodMate-Mobile project includes two main features: Mood Detection from Journaling and Chat Bot. The following is an evaluation of the Mood Detection from Journaling model based on its accuracy during training, validation, and testing. In addition, key performance metrics are provided, along with a confusion matrix for the test data.
 
-Mood Detection from Journaling
+**Mood Detection from Journaling**
 This feature classifies the user’s journal entries into one of four mood labels: angry, sad, fearful, and happy.
 
-Training and Validation Accuracy
+**Training and Validation Accuracy**
 The model was trained and validated using a prepared dataset. The following are the accuracy metrics for training and validation:
 
 Training Accuracy: 90.4%
