@@ -1,6 +1,5 @@
 package com.dicoding.moodmate.ui.account
 
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dicoding.moodmate.data.repository.UserRepository

@@ -4,6 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
@@ -21,6 +24,7 @@ import com.dicoding.moodmate.ui.ViewModelFactory
 import com.dicoding.moodmate.ui.account.AccountViewModel
 import com.dicoding.moodmate.ui.journal.JournalAdapter
 import com.dicoding.moodmate.ui.journal.JournalAddUpdateActivity
+import com.dicoding.moodmate.ui.setting.SettingActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.map
 
@@ -76,6 +80,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -92,9 +97,27 @@ class HomeFragment : Fragment() {
             }
         }
 
-        val email = accountViewModel.getSession().email
-        val greeting = getString(R.string.greeting, email)
-        binding.tvGreeting.text = greeting
+        accountViewModel.getSession().name ?.let { name ->
+            val greeting = getString(R.string.greeting, name)
+            binding.tvGreeting.text = greeting
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.dark_mode, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.dark_mode -> {
+                Intent(activity, SettingActivity::class.java).also {
+                    startActivity(it)
+                }
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun setupRecyclerView() {

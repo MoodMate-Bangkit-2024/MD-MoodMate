@@ -49,7 +49,9 @@ class LoginActivity : AppCompatActivity() {
             if (result != null) {
                 viewModel.saveSession(
                     UserModel(
+                        name = result.loginResult?.name.toString(),
                         email = binding.emailEditText.text.toString(),
+                        userId = result.loginResult?.userId.toString(),
                         token = result.loginResult?.token.toString(),
                         isLogin = true
                     )

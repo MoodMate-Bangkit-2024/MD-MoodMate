@@ -37,6 +37,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.setting.SettingActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.signup.SignupActivity"
             android:exported="false" />
         <activity

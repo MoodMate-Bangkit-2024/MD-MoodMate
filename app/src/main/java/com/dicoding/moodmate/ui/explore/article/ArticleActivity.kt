@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.moodmate.databinding.ActivityArticleBinding
 import com.dicoding.moodmate.data.util.Result
@@ -45,9 +44,10 @@ class ArticleActivity : AppCompatActivity() {
                 }
                 is Result.Error -> {
                     showLoading(false)
+                    val errorMessage = result.message ?: "Unknown error occurred"
                     Toast.makeText(
                         this,
-                        "Error: ${result.exception.message}",
+                        "Error: $errorMessage",
                         Toast.LENGTH_SHORT
                     ).show()
                 }

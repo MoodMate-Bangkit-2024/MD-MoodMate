@@ -9,7 +9,7 @@ import com.dicoding.moodmate.data.response.VideoItem
 import com.dicoding.moodmate.data.util.Result
 import kotlinx.coroutines.launch
 
-class VideoViewModel (private val repository: ExploreRepository) : ViewModel() {
+class VideoViewModel(private val repository: ExploreRepository) : ViewModel() {
 
     private val _video = MutableLiveData<Result<List<VideoItem>>>()
     val video: LiveData<Result<List<VideoItem>>> = _video
@@ -18,10 +18,10 @@ class VideoViewModel (private val repository: ExploreRepository) : ViewModel() {
         viewModelScope.launch {
             _video.value = Result.Loading
             try {
-                val video = repository.getVideo()
-                _video.value = Result.Success(video)
+                val videos = repository.getVideo()
+                _video.value = Result.Success(videos)
             } catch (e: Exception) {
-                _video.value = Result.Error(e)
+                _video.value = Result.Error(e.message ?: "An error occurred")
             }
         }
     }

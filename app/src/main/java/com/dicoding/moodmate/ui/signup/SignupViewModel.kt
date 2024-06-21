@@ -1,3 +1,4 @@
+
 package com.dicoding.moodmate.ui.signup
 
 import androidx.lifecycle.LiveData
@@ -43,4 +44,3 @@ class SignupViewModel(private val repository: UserRepository) : ViewModel() {
         }
     }
 }
-

@@ -21,7 +21,7 @@ class ArticleViewModel(private val repository: ExploreRepository) : ViewModel() 
                 val articles = repository.getArticle()
                 _article.value = Result.Success(articles)
             } catch (e: Exception) {
-                _article.value = Result.Error(e)
+                _article.value = Result.Error(e.message ?: "An error occurred")
             }
         }
     }

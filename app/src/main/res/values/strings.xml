@@ -54,9 +54,18 @@
     <string name="date">tanggal artikel</string>
     <string name="video_name">judul video</string>
     <string name="movie_name">judul movie</string>
-
-
-    <string name="mood_predict">Kamu terlihat sedang @mood</string>
-    <string name="chat">Mulai chat</string>
+    <string name="title_movie">Film</string>
+    <string name="dark_mode">dark mode\n</string>
+    <string name="tanggal">12 Januari 2024</string>
+    <string name="judul_jurnal">Judul Jurnal</string>
+    <string name="deskripsi_jurnal">Deskripsi jurnal Anda.</string>
+    <string name="nama">Nama</string>
+    <string name="email_user">sitijuhisa@gmail.com</string>
+    <string name="hint_username">Masukkan nama pengguna\n</string>
+    <string name="username_default">sitijuhisa</string>
+    <string name="username_not_found">Nama tidak ditemukan</string>
+    <string name="chat">Mulai chat\n</string>
     <string name="recommendation">Lihat rekomendasi</string>
+    <string name="mood_predict">Kamu terlihat sedang @mood</string>
+
 </resources>

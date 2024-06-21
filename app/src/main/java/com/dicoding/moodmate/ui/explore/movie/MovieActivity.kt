@@ -34,6 +34,7 @@ class MovieActivity : AppCompatActivity() {
         binding.rvMovie.layoutManager = layoutManager
         binding.rvMovie.adapter = movieAdapter
     }
+
     private fun observeViewModel() {
         movieViewModel.movie.observe(this) { result ->
             when (result) {
@@ -44,9 +45,10 @@ class MovieActivity : AppCompatActivity() {
                 }
                 is Result.Error -> {
                     showLoading(false)
+                    val errorMessage = result.message ?: "Unknown error occurred"
                     Toast.makeText(
                         this,
-                        "Error: ${result.exception.message}",
+                        "Error: $errorMessage",
                         Toast.LENGTH_SHORT
                     ).show()
                 }

@@ -1,14 +1,19 @@
 package com.dicoding.moodmate.ui.chat
 
+import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.dicoding.moodmate.data.pref.ChatModel
 import com.dicoding.moodmate.databinding.ItemChatLeftBinding
 import com.dicoding.moodmate.databinding.ItemChatRightBinding
 
-class ChatAdapter : ListAdapter<ChatMessage, RecyclerView.ViewHolder>(ChatDiffCallback()) {
+class ChatAdapter(
+    private val currentUserId: String
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private val listOfChat = mutableListOf<ChatModel>()
 
     companion object {
         private const val VIEW_TYPE_LEFT = 1
@@ -16,47 +21,51 @@ class ChatAdapter : ListAdapter<ChatMessage, RecyclerView.ViewHolder>(ChatDiffCa
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == VIEW_TYPE_RIGHT) {
-            val binding = ItemChatRightBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            RightChatViewHolder(binding)
-        } else {
-            val binding = ItemChatLeftBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            LeftChatViewHolder(binding)
+        val inflater = LayoutInflater.from(parent.context)
+        Log.d("ChatAdapter", viewType.toString())
+        return when (viewType) {
+            VIEW_TYPE_RIGHT -> {
+                val binding = ItemChatRightBinding.inflate(inflater, parent, false)
+                RightViewHolder(binding)
+            }
+            else -> {
+                val binding = ItemChatLeftBinding.inflate(inflater, parent, false)
+                LeftViewHolder(binding)
+            }
         }
     }
+
+    override fun getItemCount(): Int = listOfChat.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val message = getItem(position)
-        if (holder is RightChatViewHolder) {
-            holder.bind(message)
-        } else if (holder is LeftChatViewHolder) {
-            holder.bind(message)
-        }
+        if (listOfChat[position].type == "SEND")
+            (holder as RightViewHolder).bind(listOfChat[position])
+        else
+            (holder as LeftViewHolder).bind(listOfChat[position])
     }
+
 
     override fun getItemViewType(position: Int): Int {
-        return if (getItem(position).isSentByUser) VIEW_TYPE_RIGHT else VIEW_TYPE_LEFT
+        return if (listOfChat[position].type == "SEND") VIEW_TYPE_RIGHT else VIEW_TYPE_LEFT
     }
 
-    class RightChatViewHolder(private val binding: ItemChatRightBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(message: ChatMessage) {
-            binding.rightChat.text = message.message
+    @SuppressLint("NotifyDataSetChanged")
+    fun setData(list: List<ChatModel>) {
+        listOfChat.clear()
+        listOfChat.addAll(list)
+        notifyDataSetChanged()
+    }
+
+    inner class LeftViewHolder(private val binding: ItemChatLeftBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(chat: ChatModel) {
+            binding.leftChat.text = chat.message
         }
     }
 
-    class LeftChatViewHolder(private val binding: ItemChatLeftBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(message: ChatMessage) {
-            binding.leftChat.text = message.message
+    inner class RightViewHolder(private val binding: ItemChatRightBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(chat: ChatModel) {
+            binding.rightChat.text = chat.message
         }
     }
-}
 
-class ChatDiffCallback : DiffUtil.ItemCallback<ChatMessage>() {
-    override fun areItemsTheSame(oldItem: ChatMessage, newItem: ChatMessage): Boolean {
-        return oldItem.message == newItem.message
-    }
-
-    override fun areContentsTheSame(oldItem: ChatMessage, newItem: ChatMessage): Boolean {
-        return oldItem == newItem
-    }
 }

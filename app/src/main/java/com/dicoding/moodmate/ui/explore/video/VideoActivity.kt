@@ -34,6 +34,7 @@ class VideoActivity : AppCompatActivity() {
         binding.rvVideo.layoutManager = layoutManager
         binding.rvVideo.adapter = videoAdapter
     }
+
     private fun observeViewModel() {
         videoViewModel.video.observe(this) { result ->
             when (result) {
@@ -44,9 +45,10 @@ class VideoActivity : AppCompatActivity() {
                 }
                 is Result.Error -> {
                     showLoading(false)
+                    val errorMessage = result.message ?: "Unknown error occurred"
                     Toast.makeText(
                         this,
-                        "Error: ${result.exception.message}",
+                        "Error: $errorMessage",
                         Toast.LENGTH_SHORT
                     ).show()
                 }

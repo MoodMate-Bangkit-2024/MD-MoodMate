@@ -1,20 +1,20 @@
-package com.dicoding.moodmate.data.retrofit
+package com.dicoding.moodmate.data.retrofit.chat
 
-import com.dicoding.moodmate.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class ApiConfig {
+class ApiChatConfig {
     companion object {
-        fun getApiService(token: String): ApiService {
+        fun getApiChatService(token: String): ApiChatService {
             val loggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
             val authInterceptor = Interceptor { chain ->
                 val req = chain.request()
                 val requestHeaders = req.newBuilder()
-                    .addHeader("Authorization", "Bearer $token")
+                    .header("Content-Type", "application/json")
+                    .addHeader("Authorization", "$token")
                     .build()
                 chain.proceed(requestHeaders)
             }
@@ -23,11 +23,11 @@ class ApiConfig {
                 .addInterceptor(authInterceptor)
                 .build()
             val retrofit = Retrofit.Builder()
-                .baseUrl(BuildConfig.BASE_URL)
+                .baseUrl("http://34.101.171.205/chatbot/6666be79adabecee79088864/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()
-            return retrofit.create(ApiService::class.java)
+            return retrofit.create(ApiChatService::class.java)
         }
     }
 }

@@ -1,27 +1,61 @@
 package com.dicoding.moodmate.ui.chat
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.util.Log
+import androidx.lifecycle.*
+import com.dicoding.moodmate.data.pref.UserModel
+import com.dicoding.moodmate.data.repository.UserRepository
+import com.dicoding.moodmate.data.response.ChatItem
+import com.dicoding.moodmate.data.response.PromptResponse
+import com.dicoding.moodmate.data.util.Result
+import kotlinx.coroutines.launch
 
-class ChatViewModel : ViewModel() {
+class ChatViewModel(private val repository: UserRepository) : ViewModel() {
 
-    private val _chatMessages = MutableLiveData<List<ChatMessage>>()
-    val chatMessages: LiveData<List<ChatMessage>> = _chatMessages
+    private val _chatRoom = MutableLiveData<List<ChatItem?>?>()
+    val chatRoom: LiveData<List<ChatItem?>?> = _chatRoom
 
-    init {
-        _chatMessages.value = listOf(ChatMessage("Welcome to the chat!", false))
+    val currentUser: LiveData<UserModel> = repository.getSession().asLiveData()
+
+    private val _sendMessageResult = MutableLiveData<Result<PromptResponse>>()
+    val sendMessageResult: LiveData<Result<PromptResponse>> = _sendMessageResult
+
+    fun getChatRoom(author: String) {
+        viewModelScope.launch {
+            val result = repository.getChatRoom(author)
+            if (result.isSuccess) {
+                _chatRoom.value = result.getOrNull()?.data
+            } else {
+                val errorMessage = result.exceptionOrNull()?.message ?: "Unknown error"
+                Log.e("ChatViewModel", "Error fetching chat room: $errorMessage")
+            }
+        }
     }
 
-    fun sendMessage(message: String) {
-        val currentList = _chatMessages.value ?: listOf()
-        val updatedList = currentList + ChatMessage(message, true)
-        _chatMessages.value = updatedList
+    fun sendMessage(prompt: String) {
+        viewModelScope.launch {
+            _sendMessageResult.value = Result.Loading
+            try {
+                val response = repository.sendMessage(prompt)
+                if (response.isSuccess) {
+                    _sendMessageResult.value = Result.Success(response.getOrThrow())
+                } else {
+                    _sendMessageResult.value = Result.Error(response.exceptionOrNull()?.message ?: "Unknown error")
+                }
+            } catch (e: Exception) {
+                _sendMessageResult.value = Result.Error(e.message ?: "Unknown error")
+            }
+        }
     }
 
-        fun receiveMessage(message: String) {
-        val currentList = _chatMessages.value ?: listOf()
-        val updatedList = currentList + ChatMessage(message, false)
-        _chatMessages.value = updatedList
+    fun reloadChatRoom(author: String) {
+        viewModelScope.launch {
+            val result = repository.getChatRoom(author)
+            if (result.isSuccess) {
+                _chatRoom.postValue(result.getOrNull()?.data)
+            } else {
+                val errorMessage = result.exceptionOrNull()?.message ?: "Unknown error"
+                Log.e("ChatViewModel", "Error reloading chat room: $errorMessage")
+            }
+        }
     }
 }

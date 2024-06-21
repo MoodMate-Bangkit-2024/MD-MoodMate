@@ -17,7 +17,7 @@ object ExploreConfig {
             .addInterceptor(loggingInterceptor)
             .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://34.101.171.205/explore/")
+            .baseUrl(BuildConfig.EXPLORE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

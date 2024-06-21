@@ -3,15 +3,14 @@ package com.dicoding.moodmate.ui
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.dicoding.moodmate.MainViewModel
 import com.dicoding.moodmate.data.repository.UserRepository
 import com.dicoding.moodmate.data.di.Injection
 import com.dicoding.moodmate.ui.account.AccountViewModel
+import com.dicoding.moodmate.ui.chat.ChatViewModel
 import com.dicoding.moodmate.ui.login.LoginViewModel
 import com.dicoding.moodmate.ui.signup.SignupViewModel
 import com.dicoding.moodmate.ui.welcome.WelcomeViewModel
-import com.dicoding.moodmate.MainViewModel
-import com.dicoding.moodmate.ui.explore.article.ArticleViewModel
-import com.dicoding.moodmate.ui.home.HomeViewModel
 
 class ViewModelFactory(private val repository: UserRepository) :
     ViewModelProvider.NewInstanceFactory() {
@@ -33,6 +32,9 @@ class ViewModelFactory(private val repository: UserRepository) :
             }
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
                 MainViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(ChatViewModel::class.java) -> {
+                ChatViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

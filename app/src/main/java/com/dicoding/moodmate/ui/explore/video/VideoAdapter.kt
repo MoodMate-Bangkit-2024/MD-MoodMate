@@ -28,7 +28,7 @@ class VideoAdapter : ListAdapter<VideoItem, VideoAdapter.VideoViewHolder>(DIFF_C
         fun bind(item: VideoItem) {
             bind.videoName.text = item.title
             if (item.imageUrl.isNullOrEmpty()) {
-                bind.ivVideo.setImageResource(R.drawable.default_img)
+                bind.ivVideo.setImageResource(R.drawable.img_default)
             } else {
                 Glide.with(bind.root)
                     .load(item.imageUrl)

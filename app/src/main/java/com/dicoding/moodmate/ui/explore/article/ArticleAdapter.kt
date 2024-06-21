@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.dicoding.moodmate.R
 import com.dicoding.moodmate.data.response.DataItem
 import com.dicoding.moodmate.data.util.DateFormatter
@@ -33,12 +35,12 @@ class ArticleAdapter : ListAdapter<DataItem, ArticleAdapter.ArticleViewHolder>(D
             binding.tvItemDate.text = item.publishedAt?.let { DateFormatter.formatDate(it, TimeZone.getDefault().id) }
 
             if (item.imageUrl.isNullOrEmpty()) {
-                binding.ivPhoto.setImageResource(R.drawable.default_img)
+                binding.ivPhoto.setImageResource(R.drawable.img_default)
             } else {
                 Glide.with(binding.root)
                     .load(item.imageUrl)
-                    .placeholder(R.drawable.default_img)
-                    .error(R.drawable.default_img)
+                    .placeholder(R.drawable.img_default)
+                    .error(R.drawable.img_default)
                     .into(binding.ivPhoto)
             }
 

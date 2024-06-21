@@ -28,10 +28,12 @@ class MovieAdapter : ListAdapter<MovieItem, MovieAdapter.MovieViewHolder>(DIFF_C
         fun bind(item: MovieItem) {
             bind.movieName.text = item.title
             if (item.imageUrl.isNullOrEmpty()) {
-                bind.ivMovie.setImageResource(R.drawable.default_img)
+                bind.ivMovie.setImageResource(R.drawable.img_default)
             } else {
                 Glide.with(bind.root)
                     .load(item.imageUrl)
+                    .placeholder(R.drawable.img_default)
+                    .error(R.drawable.img_default)
                     .into(bind.ivMovie)
             }
 

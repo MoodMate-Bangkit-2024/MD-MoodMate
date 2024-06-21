@@ -16,7 +16,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guidelineHorizontal2"
-        app:srcCompat="@drawable/image_login" />
+        app:srcCompat="@drawable/image_login"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/titleTextView"
@@ -26,14 +27,14 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:text="@string/title_login_page"
-        android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textColor="@color/blue1"
+        android:textSize="18sp"
         android:textStyle="bold"
+        android:fontFamily="@font/medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guidelineHorizontal"
-        android:alpha="0"
         tools:alpha="100"/>
 
     <TextView
@@ -43,13 +44,13 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:text="@string/message_login_page"
-        android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textColor="@color/blue1"
+        android:fontFamily="@font/medium"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleTextView"
-        android:alpha="0"
         tools:alpha="100"/>
 
     <TextView
@@ -59,10 +60,10 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
         android:text="@string/email"
-        android:textColor="@color/black"
+        android:textColor="@color/blue1"
+        android:fontFamily="@font/medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/messageTextView"
-        android:alpha="0"
         tools:alpha="100"/>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -76,7 +77,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailTextView"
         app:startIconDrawable="@drawable/ic_baseline_email_24"
-        android:alpha="0"
         tools:alpha="100">
 
         <com.dicoding.moodmate.ui.customview.EmailInput
@@ -96,10 +96,10 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:text="@string/password"
-        android:textColor="@color/black"
+        android:textColor="@color/blue1"
+        android:fontFamily="@font/medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailEditTextLayout"
-        android:alpha="0"
         tools:alpha="100"/>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -134,8 +134,9 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:backgroundTint="@color/blue1"
         android:text="@string/login"
+        android:fontFamily="@font/medium"
+        android:background="@drawable/btn_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordEditTextLayout"
