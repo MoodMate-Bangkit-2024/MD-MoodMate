@@ -1,6 +1,5 @@
 package com.dicoding.moodmate.data.retrofit.remotejournal
 
-import com.dicoding.moodmate.data.response.JournalData
 import com.dicoding.moodmate.data.response.JournalResponse
 import com.dicoding.moodmate.data.response.SingleJournalData
 import com.dicoding.moodmate.data.response.SingleJournalResponse
@@ -25,14 +24,14 @@ interface JournalService {
 
     @POST("predict/mood")
     fun createJournal(
-        @Body journal: JournalData,
+        @Body journal: SingleJournalData,
         @Header("Authorization") auth: String
     ): Call<SingleJournalResponse>
 
     @PUT("journals/{id}")
     fun updateJournal(
         @Path("id") id: String,
-        @Body journal: JournalData,
+        @Body journal: SingleJournalData,
         @Header("Authorization") auth: String
     ): Call<SingleJournalResponse>
 

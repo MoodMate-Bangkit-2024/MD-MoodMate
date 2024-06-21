@@ -64,8 +64,12 @@
     <string name="hint_username">Masukkan nama pengguna\n</string>
     <string name="username_default">sitijuhisa</string>
     <string name="username_not_found">Nama tidak ditemukan</string>
-    <string name="chat">Mulai chat\n</string>
+
+
+    <string name="mood_predict">Kamu terlihat sedang %s</string>
     <string name="recommendation">Lihat rekomendasi</string>
-    <string name="mood_predict">Kamu terlihat sedang @mood</string>
+    <string name="article_rec">Artikel</string>
+    <string name="film">Film</string>
+    <string name="music">Musik</string>
 
 </resources>

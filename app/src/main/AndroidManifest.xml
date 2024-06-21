@@ -16,16 +16,28 @@
         android:theme="@style/Theme.MoodMate"
         tools:targetApi="31">
         <activity
+            android:name=".ui.recommendation.RecommendationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.recommendation.articleRec.ArticleRecActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.recommendation.music.MusicActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.recommendation.movieRec.MovieRecActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.explore.movie.MovieActivity"
             android:exported="false" />
         <activity
             android:name=".ui.explore.video.VideoActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.journal.JournalAddUpdateActivity"
+            android:name=".ui.explore.article.ArticleActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.explore.article.ArticleActivity"
+            android:name=".ui.journal.JournalAddUpdateActivity"
             android:exported="false" />
         <activity
             android:name=".ui.welcome.WelcomeActivity"

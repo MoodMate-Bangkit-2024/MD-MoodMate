@@ -19,11 +19,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.moodmate.R
 import com.dicoding.moodmate.data.pref.dataStore
 import com.dicoding.moodmate.data.response.JournalData
+import com.dicoding.moodmate.data.response.SingleJournalData
 import com.dicoding.moodmate.databinding.FragmentHomeBinding
 import com.dicoding.moodmate.ui.ViewModelFactory
 import com.dicoding.moodmate.ui.account.AccountViewModel
 import com.dicoding.moodmate.ui.journal.JournalAdapter
 import com.dicoding.moodmate.ui.journal.JournalAddUpdateActivity
+import com.dicoding.moodmate.ui.journal.JournalViewModel
 import com.dicoding.moodmate.ui.setting.SettingActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.map
@@ -36,6 +38,10 @@ class HomeFragment : Fragment() {
     private lateinit var adapter: JournalAdapter
     private val homeViewModel: HomeViewModel by viewModels()
     private val accountViewModel: AccountViewModel by viewModels {
+        ViewModelFactory.getInstance(requireContext())
+    }
+
+    private val viewModel: JournalViewModel by viewModels {
         ViewModelFactory.getInstance(requireContext())
     }
 
@@ -88,7 +94,6 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         setupFab()
-        loadJournalsAsync()
 
         if (savedInstanceState != null) {
             val list = savedInstanceState.getParcelableArrayList<JournalData>(EXTRA_STATE)
@@ -123,8 +128,20 @@ class HomeFragment : Fragment() {
     private fun setupRecyclerView() {
         adapter = JournalAdapter(object : JournalAdapter.OnItemClickCallback {
             override fun onItemClicked(selectedJournal: JournalData, position: Int?) {
+                val journal = SingleJournalData(
+                    selectedJournal.createdAt!!,
+                    selectedJournal.updatedAt,
+                    selectedJournal.title!!,
+                    selectedJournal.text!!,
+                    selectedJournal.mood!!,
+                    selectedJournal.author!!,
+                    selectedJournal.id!!,
+                    selectedJournal.v!!
+                )
+
                 val intent = Intent(activity, JournalAddUpdateActivity::class.java)
-                intent.putExtra(JournalAddUpdateActivity.EXTRA_JOURNAL, selectedJournal)
+
+                intent.putExtra(JournalAddUpdateActivity.EXTRA_JOURNAL, journal)
                 intent.putExtra(JournalAddUpdateActivity.EXTRA_POSITION, position)
                 resultLauncher.launch(intent)
             }
@@ -145,18 +162,17 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun loadJournalsAsync() {
+    private fun loadJournalsAsync(token : String) {
         context?.dataStore!!.data.map { pref ->
-            // TODO: Ambil token dari datastore, passing ke homeViewModel.loadJournals()
         }
 
         homeViewModel.loadJournals(
-            // TODO: For now, token masih hardcoded, nanti pake yang dari datastore
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjZiZTc5YWRhYmVjZWU3OTA4ODg2NCIsImlhdCI6MTcxODUyNTA5NCwiZXhwIjoxNzE4Nzg0Mjk0fQ.HYKx9YYc7e1IzMUc2UXBj62Qv9zziYLD-0tuffVbl6w"
+            token
         )
 
         homeViewModel.journals.observe(viewLifecycleOwner) { journals ->
             Log.d("Journal Get", "loadJournalsAsync: $journals")
+
             if (journals != null) {
                 adapter.listJournals = ArrayList(journals)
                 binding.tvEmptyMessage.visibility = if (journals.isEmpty()) View.VISIBLE else View.GONE
@@ -180,6 +196,13 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.user.observe(viewLifecycleOwner){
+            loadJournalsAsync(it.token)
+        }
     }
 
     companion object {

@@ -33,12 +33,10 @@ class HomeViewModel : ViewModel() {
                         _journals.postValue(journalList)
                     } else {
                         Log.d("Journal Get", "Failed to load journals: ${response.code()}")
-                        // Handle error
                     }
                 }
 
                 override fun onFailure(call: Call<JournalResponse>, t: Throwable) {
-                    // Handle failure
                 }
             })
         }

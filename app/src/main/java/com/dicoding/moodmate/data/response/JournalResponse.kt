@@ -22,16 +22,16 @@ data class JournalData(
 	var createdAt: String? = null,
 
 	@field:SerializedName("mood")
-	val mood: String? = null,
+	val mood: String?,
 
 	@field:SerializedName("author")
-	var author: String? = null,
+	var author: String?,
 
 	@field:SerializedName("__v")
-	var v: Int? = null,
+	var v: Int?,
 
 	@field:SerializedName("_id")
-	var id: String? = null,
+	var id: String?,
 
 	@field:SerializedName("text")
 	var text: String? = null,
@@ -58,19 +58,19 @@ data class SingleJournalResponse(
 @Parcelize
 data class SingleJournalData(
 	@field:SerializedName("createdAt")
-	val createdAt: String,
+	var createdAt: String,
 	@field:SerializedName("updatedAt")
-	val updatedAt: String?,
+	var updatedAt: String?,
 	@field:SerializedName("title")
-	val title: String,
+	var title: String,
 	@field:SerializedName("text")
-	val text: String,
+	var text: String,
 	@field:SerializedName("mood")
-	val mood: String,
+	var mood: String,
 	@field:SerializedName("author")
-	val author: String,
+	var author: String,
 	@field:SerializedName("_id")
-	val id: String,
+	var id: String,
 	@field:SerializedName("__v")
-	val v: Int,
+	var v: Int,
 ) : Parcelable

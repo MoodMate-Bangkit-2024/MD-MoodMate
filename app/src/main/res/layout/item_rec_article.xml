@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/bg_rounded_corner"
+    tools:context=".ui.recommendation.articleRec.ArticleRecActivity">
+
+    <TextView
+        android:id="@+id/tv_article_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Judul Artikel"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/blue2"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:padding="4dp"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/tv_article_author"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Penulis: Nama Penulis"
+        android:textSize="14sp"
+        android:textColor="@color/blue2"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:padding="4dp"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/btn_read_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Baca Selengkapnya"
+        android:textColor="@color/white"
+        android:background="@color/blue2"
+        android:layout_gravity="end"
+        android:padding="8dp"
+        tools:ignore="HardcodedText" />
+</LinearLayout>

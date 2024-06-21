@@ -8,6 +8,7 @@ import com.dicoding.moodmate.data.repository.UserRepository
 import com.dicoding.moodmate.data.di.Injection
 import com.dicoding.moodmate.ui.account.AccountViewModel
 import com.dicoding.moodmate.ui.chat.ChatViewModel
+import com.dicoding.moodmate.ui.journal.JournalViewModel
 import com.dicoding.moodmate.ui.login.LoginViewModel
 import com.dicoding.moodmate.ui.signup.SignupViewModel
 import com.dicoding.moodmate.ui.welcome.WelcomeViewModel
@@ -35,6 +36,9 @@ class ViewModelFactory(private val repository: UserRepository) :
             }
             modelClass.isAssignableFrom(ChatViewModel::class.java) -> {
                 ChatViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(JournalViewModel::class.java) -> {
+                JournalViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
